@@ -1,0 +1,8 @@
+activity_sequence,activity_code,activity_name,is_processing_activity
+1,ORDER_RELEASED,Order Released,0
+2,PICKING,Picking / Pulling,1
+3,INSPECTION,Inspection,1
+4,PACK_WRAP,Pack / Wrap,1
+5,STAGING,Staging,1
+6,LOADING,Loading,1
+7,SHIPPED,Shipped,0
