@@ -1,0 +1,7 @@
+scenario_id,scenario_code,scenario_name,scenario_description
+S01,BASELINE,Baseline,Current planned regular staffing with no planned overtime.
+S02,REGULAR_HOURS_UP,Increase Regular Hours,Add up to 16 planned regular worker-hours to address a projected shortage.
+S03,OVERTIME,Add Overtime,Add up to 20 planned overtime hours to address a projected shortage.
+S04,HIGH_DEMAND,High Demand,Stress test with workload 20% above the base forecast.
+S05,LOW_PRODUCTIVITY,Low Productivity,Stress test with productivity 15% below expected productivity.
+S06,REGULAR_HOURS_DOWN,Reduce Regular Hours,Reduce up to 16 planned regular worker-hours to test overstaffing reduction.
