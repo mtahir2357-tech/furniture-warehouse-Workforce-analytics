@@ -21,4 +21,4 @@ if [ ! -f "$HOME/.streamlit/credentials.toml" ]; then
   printf '[general]\nemail = ""\n' > "$HOME/.streamlit/credentials.toml"
 fi
 echo "Starting dashboard at http://localhost:8501  (press Control+C to stop)"
-streamlit run app.py
+streamlit run app.py --server.headless false
