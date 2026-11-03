@@ -1,0 +1,21 @@
+{
+  "source": "synthetic warehouse daily outcomes",
+  "date_sort": "chronological by operating day",
+  "development_train_pct": 64,
+  "development_validation_pct": 16,
+  "final_test_pct": 20,
+  "selected_versions": {
+    "workload": "revised",
+    "productivity": "revised"
+  },
+  "feature_availability": {
+    "workload": "Calendar and demand lag values must precede the prediction date.",
+    "productivity": "Opening backlog and planned staff/hours must be known when decision is made; lagged realized productivity from only previous completed days."
+  },
+  "limitations": [
+    "One-step-ahead historical holdout, not a validated 14-day recursive forecast.",
+    "Synthetic data not calibrated to actual operational data.",
+    "No causal effects are estimated by changing model predictors.",
+    "Final test results must not be used to select further configurations."
+  ]
+}
