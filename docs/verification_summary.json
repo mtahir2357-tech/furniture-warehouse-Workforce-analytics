@@ -1,0 +1,23 @@
+{
+  "data_days": 939,
+  "forecast_rows": 12166,
+  "forecast_runs": 869,
+  "matching_reproduced_point_rows": 12166,
+  "matching_reproduced_productivity_rows": 12166,
+  "max_point_difference": 0.0,
+  "max_productivity_difference": 0.0,
+  "test_start": "2025-05-28",
+  "test_origin_count": 173,
+  "test_forecast_rows": 2422,
+  "test_overall_interval_coverage_pct": 70.02,
+  "test_day1_interval_coverage_pct": 47.4,
+  "test_day14_interval_coverage_pct": 87.28,
+  "scheduled_worker_counts": [
+    25
+  ],
+  "scheduled_worker_hour_counts": [
+    200.0
+  ],
+  "source_6pm_forecast": "uses cutoff previous operating day, not origin-day actual",
+  "special_notes": "Historical final test already inspected; evaluation is reporting only and cannot guide further tuning."
+}

@@ -1,0 +1,21 @@
+{
+  "train_origin_count": 533,
+  "validation_origin_count": 135,
+  "train_forecast_rows": 7462,
+  "validation_forecast_rows": 1890,
+  "train_origin_first": "2023-03-08",
+  "train_origin_last": "2024-11-18",
+  "validation_origin_first": "2024-12-05",
+  "validation_origin_last": "2025-05-10",
+  "final_test_start": "2025-05-28",
+  "final_test_evaluated_in_part2": false,
+  "selection_rule": "Minimum validation MAE over all 14 horizons per KPI; no test period used",
+  "selected": {
+    "Workload": "14-day recent mean",
+    "Productivity": "56-day mean"
+  },
+  "archive_forecast_reproduction_checked_records": 9352,
+  "archive_max_diff_workload": 0.0049999999999954525,
+  "archive_max_diff_productivity": 5.0000000000105516e-05,
+  "note": "Historical validation origins overlap in target date; coverage is descriptive and not independent. Future known promotion flags remain an unverified data-availability assumption."
+}
