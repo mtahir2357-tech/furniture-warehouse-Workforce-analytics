@@ -1,4 +1,6 @@
-streamlit>=1.50,<2
+# Pinned: Streamlit 1.57+ switched to a Uvicorn server whose static JS files return HTTP 500 on
+# Streamlit Community Cloud, leaving the page stuck on a loading spinner. 1.56.0 uses Tornado.
+streamlit==1.56.0
 pandas>=2.1,<3
 numpy>=1.24,<3
 scikit-learn==1.9.1
