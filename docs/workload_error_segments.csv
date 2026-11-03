@@ -1,0 +1,9 @@
+horizon,segment,n,mae,rmse,bias_actual_minus_pred,wape_pct
+1,peak,39,84.4267,117.9376,20.5487,24.49
+1,nonpeak,134,58.8391,72.1469,-2.004,18.86
+1,top-decile actual demand (post hoc),18,140.2361,174.4737,140.2361,29.17
+1,remaining demand,155,55.8247,66.8178,-12.8477,18.57
+14,peak,52,74.9323,107.9475,2.0115,22.71
+14,nonpeak,121,61.2424,74.8922,-0.7579,19.66
+14,top-decile actual demand (post hoc),18,140.3706,174.9384,140.3706,29.11
+14,remaining demand,155,56.6461,68.803,-16.2179,19.02

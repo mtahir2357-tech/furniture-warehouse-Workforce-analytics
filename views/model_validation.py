@@ -24,11 +24,11 @@ for key,m in evaluations.items():
     base=m.get('naive_mae',0)
     rows.append({'KPI':LABELS.get(key,key),'Original MAE':m.get('mae'),
         'Original RMSE':m.get('rmse'),'Previous-day baseline MAE':base,
-        'Improvement vs baseline':(base-m['mae'])/base if base else None,
+        'Improvement vs baseline (%)':100*(base-m['mae'])/base if base else None,
         'Test days':m.get('test_rows')})
 st.subheader('Original trained models')
 st.dataframe(pd.DataFrame(rows),hide_index=True,use_container_width=True,
-    column_config={'Improvement vs baseline':st.column_config.NumberColumn(format='%.1%')})
+    column_config={'Improvement vs baseline (%)':st.column_config.NumberColumn(format='%.1f')})
 st.caption('Reported original Week 10 holdout results; the saved 14-day planning forecasts are a separate historical forecasting system.')
 
 eval_path=ROOT/'models'/'week11_evaluation.csv'
