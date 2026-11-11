@@ -1,0 +1,42 @@
+{
+  "workload": {
+    "existing_original": {
+      "mae": 65.33929739874822,
+      "rmse": 86.20043167228994,
+      "wape": 20.6377374208098,
+      "bias": -0.6612522737689366,
+      "n": 187,
+      "week11_final_test_mae": 65.33929739874822,
+      "matches_week11": true
+    },
+    "existing_revised": {
+      "mae": 64.71223914769192,
+      "rmse": 85.56914966243828,
+      "wape": 20.439677997950135,
+      "bias": -0.3633357645941454,
+      "n": 187,
+      "week11_final_test_mae": 64.71223914769192,
+      "matches_week11": true
+    }
+  },
+  "productivity": {
+    "existing_original": {
+      "mae": 0.07593248445162692,
+      "rmse": 0.0954557364480251,
+      "wape": 4.604835677131747,
+      "bias": 0.005150371991058894,
+      "n": 187,
+      "week11_final_test_mae": 0.0759324844516269,
+      "matches_week11": true
+    },
+    "existing_revised": {
+      "mae": 0.07531425655173969,
+      "rmse": 0.09465461891077019,
+      "wape": 4.567343977623184,
+      "bias": 0.006779805040726186,
+      "n": 187,
+      "week11_final_test_mae": 0.0753142565517397,
+      "matches_week11": true
+    }
+  }
+}
