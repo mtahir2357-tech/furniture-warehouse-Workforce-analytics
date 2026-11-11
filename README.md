@@ -2,6 +2,14 @@
 
 This is the **full standalone project**, merged from the uploaded GitHub ZIP and the validation update ZIP. It includes all 12 original synthetic data tables, the four Random Forest model files, revised three-page Streamlit entrypoint, historical 14-day forecasts, validation reports, tests, and a saved Week 10 snapshot.
 
+## Week 12: forecasting comparison and FTE planning
+
+- **Four forecasting methods** (Weekday Average, Random Forest, XGBoost, Prophet) compared for Daily Workload and Labor Productivity, next-day and 14-day horizons, on identical chronological forecast origins. Run `python evaluate_forecasting.py` (needs `requirements-forecasting.txt`); results are saved to `models/forecast_comparison/` and shown in the **Forecasting Model Comparison** section of *Model validation* and *Model insights & scenarios*.
+- **Result:** Prophet has the lowest validation MAE for workload and the weekday average/Random Forest for productivity, but **no trained model is statistically better than the weekday-average baseline** (Diebold–Mariano p > 0.7). The existing Random Forest results are reproduced exactly.
+- **FTE** (8-hour worker-shift equivalents) added to the 14-day overview, Staffing scenarios and the newly registered **Workforce planning (FTE)** page, which links forecast → required hours → required/available FTE → feasible staffing response under roster, overtime and minimum-staffing limits.
+- Full method, tables, tests and limitations: `docs/WEEK12_FORECASTING_FTE_REPORT.md`.
+- The app does not import XGBoost or Prophet at runtime, so the deployed `requirements.txt` is unchanged.
+
 ## Installation (Mac / Windows / Linux)
 
 Use Python 3.11+ and a new virtual environment. In a terminal **inside this project folder**:

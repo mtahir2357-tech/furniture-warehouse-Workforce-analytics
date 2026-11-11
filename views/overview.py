@@ -1,11 +1,18 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import state, ui
+from src import fte, state, ui
+from src.config import SHIFT_HOURS
 
 as_of = state.as_of()
 o = state.current_outlook()
 sel = state.target_row(o)
+# FTE = 8-hour worker-shift equivalents of the same required / available hours shown on this page.
+_f = o.apply(lambda r: fte.fte_summary(r["projected_required_labor_hours"], r["expected_available_regular_hours"]), axis=1)
+o["required_fte"] = [x["required_fte"] for x in _f]
+o["available_fte"] = [x["available_fte"] for x in _f]
+o["fte_gap"] = [x["fte_gap"] for x in _f]
+o["additional_shifts"] = [x["additional_shifts"] for x in _f]
 
 ui.page_header(
     "14-day planning overview",
@@ -29,6 +36,8 @@ ui.kpi_row(
         {"label": "Surplus days", "value": n_surplus, "unit": "of 14", "status": "Surplus"},
         {"label": "High capacity-exceedance risk", "value": int((o["exceedance_risk"] == "High").sum()), "unit": "days",
          "sub": "P(workload > baseline capacity) ≥ 50%"},
+        {"label": "Avg. required FTE", "value": f"{o['required_fte'].mean():,.2f}", "unit": "shifts/day",
+         "sub": f"vs {o['available_fte'].mean():,.2f} available · peak extra {int(o['additional_shifts'].max())} shift(s)"},
     ]
 )
 
@@ -79,7 +88,7 @@ table = o.assign(
     Note=o.apply(lambda r: r["holiday_name"] if r["known_holiday_flag"] == 1 and isinstance(r["holiday_name"], str)
                  else ("Promotion" if r["known_promotion_flag"] == 1 else ""), axis=1),
 )[["Date", "forecast_workload_units", "Range", "projected_required_labor_hours", "expected_available_regular_hours",
-   "capacity_gap_hours", "Risk", "status", "Note"]]
+   "capacity_gap_hours", "required_fte", "available_fte", "fte_gap", "additional_shifts", "Risk", "status", "Note"]]
 table["status"] = table["status"].map(lambda v: f"{ui.STATUS[v]['icon']} {v}")
 event = st.dataframe(
     table,
@@ -95,6 +104,13 @@ event = st.dataframe(
         "projected_required_labor_hours": st.column_config.NumberColumn("Required hrs", format="%.1f"),
         "expected_available_regular_hours": st.column_config.NumberColumn("Available hrs", format="%.1f"),
         "capacity_gap_hours": st.column_config.NumberColumn("Capacity gap (hrs)", format="%+.1f"),
+        "required_fte": st.column_config.NumberColumn("Required FTE", format="%.2f",
+                                                      help=f"Required labor hours ÷ {SHIFT_HOURS:g} (worker-shift equivalents)"),
+        "available_fte": st.column_config.NumberColumn("Available FTE", format="%.2f",
+                                                       help=f"Available worker hours ÷ {SHIFT_HOURS:g}; manager hours excluded"),
+        "fte_gap": st.column_config.NumberColumn("FTE gap", format="%+.2f", help="Required − available FTE (positive = shortage)"),
+        "additional_shifts": st.column_config.NumberColumn("Extra shifts", format="%d",
+                                                           help="Whole 8-hour worker-shift equivalents to cover a shortage (rounded up)"),
         "Risk": st.column_config.ProgressColumn("Exceedance risk", format="%d%%", min_value=0, max_value=100),
         "status": st.column_config.TextColumn("Status"),
         "Note": st.column_config.TextColumn("Calendar"),
@@ -125,4 +141,7 @@ with cA:
 with cB:
     if st.button("Review selected day", type="primary", width="stretch"):
         st.switch_page("views/day_detail.py")
+ui.note(f"FTE = 8-hour worker-shift equivalents (hours ÷ {SHIFT_HOURS:g}), not contractual full-time headcount. "
+        "Required FTE uses the forecast workload ÷ expected productivity, as in the required-hours column; carry-in backlog "
+        "is added on the Workforce planning (FTE) page.")
 ui.note("Decision supported: which future operating days require staffing review?")

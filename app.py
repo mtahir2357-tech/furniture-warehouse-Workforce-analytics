@@ -63,6 +63,7 @@ pages = {
     ],
     "Detailed analysis": [
         st.Page("views/overview.py", title="14-day overview", icon=":material/calendar_view_week:"),
+        st.Page("views/workforce_planning.py", title="Workforce planning (FTE)", icon=":material/groups:"),
         st.Page("views/day_detail.py", title="Selected day detail", icon=":material/today:"),
         st.Page("views/scenarios.py", title="Staffing scenarios", icon=":material/compare_arrows:"),
         st.Page("views/decision.py", title="Decision & outcome", icon=":material/task_alt:"),

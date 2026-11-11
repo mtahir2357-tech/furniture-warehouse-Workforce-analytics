@@ -79,3 +79,8 @@ reference_prediction=float(model.predict(pd.DataFrame([bundle['reference']],colu
 st.caption(f'Local explanation: starting from the training-median reference prediction ({reference_prediction:,.2f}), each predictor is replaced in the displayed feature order with its scenario value. The signed steps sum to the un-clipped model prediction difference; positive values raise the predicted KPI, negative values lower it. Contributions depend on feature order and are not causal, especially for correlated predictors.')
 for f,v in sorted(steps,key=lambda q:abs(q[1]),reverse=True)[:3]:
  st.write(f"• **{name_map.get(f,f)}**: {v:+,.2f} prediction units relative to the preceding reference step; scenario input {entered[f]:,.2f}.")
+# ---- Week 12: four-method forecasting comparison (summary; full detail on Model validation) ----
+from src import comparison_ui
+st.divider()
+comparison_ui.render(key='pm_cmp',compact=True)
+st.caption('Full error, peak-demand and consistency comparisons are on the **Model validation** page.')
