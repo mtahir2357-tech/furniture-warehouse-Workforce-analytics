@@ -1,8 +1,8 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import logic, state, ui
-from src.config import ACTION_SCENARIOS, SCENARIO_LABELS
+from src import fte, logic, state, ui
+from src.config import ACTION_SCENARIOS, SCENARIO_LABELS, SHIFT_HOURS
 
 as_of = state.as_of()
 o = state.current_outlook()
@@ -47,11 +47,16 @@ ui.kpi_row([
 # ---- Alternatives table -----------------------------------------------------
 ui.section("Staffing alternatives",
            "Stress tests show how the current plan holds up under harder conditions; they are not staffing actions.")
+_tf = [fte.fte_summary(a, b) for a, b in zip(tbl["projected_required_labor_hours"], tbl["expected_total_available_hours"])]
 disp = tbl.assign(
     Scenario=tbl["scenario_label"],
     Util=(tbl["projected_capacity_utilization"] * 100),
+    req_fte=[x["required_fte"] for x in _tf],
+    av_fte=[x["available_fte"] for x in _tf],
+    fte_gap=[x["fte_gap"] for x in _tf],
+    extra=[x["additional_shifts"] for x in _tf],
 )[["Scenario", "planned_overtime_hours", "expected_total_available_hours",
-   "capacity_gap_hours", "Util", "projected_unprocessed_wlu", "backlog_risk",
+   "capacity_gap_hours", "req_fte", "av_fte", "fte_gap", "extra", "Util", "projected_unprocessed_wlu", "backlog_risk",
    "projected_total_labor_cost", "status"]]
 disp["status"] = disp["status"].map(lambda v: f"{ui.STATUS[v]['icon']} {v}")
 st.dataframe(
@@ -63,6 +68,11 @@ st.dataframe(
         "expected_total_available_hours": st.column_config.NumberColumn("Total available", format="%.1f"),
         "projected_required_labor_hours": st.column_config.NumberColumn("Required hrs", format="%.1f"),
         "capacity_gap_hours": st.column_config.NumberColumn("Capacity gap", format="%+.1f"),
+        "req_fte": st.column_config.NumberColumn("Required FTE", format="%.2f", help=f"Required hours ÷ {SHIFT_HOURS:g}"),
+        "av_fte": st.column_config.NumberColumn("Available FTE", format="%.2f",
+                                                help=f"Available worker hours (incl. overtime, excl. managers) ÷ {SHIFT_HOURS:g}"),
+        "fte_gap": st.column_config.NumberColumn("FTE gap", format="%+.2f", help="Required − available (positive = shortage)"),
+        "extra": st.column_config.NumberColumn("Extra shifts", format="%d", help="Whole 8-hour shift equivalents still needed"),
         "Util": st.column_config.NumberColumn("Utilization", format="%.0f%%"),
         "projected_unprocessed_wlu": st.column_config.NumberColumn("Unprocessed", format="%.1f"),
         "backlog_risk": st.column_config.TextColumn("Backlog risk"),
@@ -150,8 +160,11 @@ res = logic.compute_scenario(custom["wl"], custom["prod"], custom["reg"], custom
                              float(base["avg_worker_hourly_rate"]), float(base["projected_manager_labor_cost"]),
                              float(r["historical_revenue_per_wlu"]))
 c_status = logic.classify_gap(res["capacity_gap_hours"], tol)
+c_fte = fte.fte_summary(res["projected_required_labor_hours"], res["expected_total_available_hours"])
 ui.kpi_row([
     {"label": "Total available labor", "value": f"{res['expected_total_available_hours']:,.1f}", "unit": "hrs"},
+    {"label": "Required vs available FTE", "value": f"{c_fte['required_fte']:,.2f} / {c_fte['available_fte']:,.2f}",
+     "sub": f"FTE gap {c_fte['fte_gap']:+.2f} · extra shifts {c_fte['additional_shifts']}"},
     {"label": "Capacity gap", "value": f"{res['capacity_gap_hours']:+,.1f}", "unit": "hrs", "sub": c_status, "status": c_status},
     {"label": "Backlog risk", "value": logic.backlog_risk(res["projected_capacity_utilization"]),
      "status": logic.backlog_risk(res["projected_capacity_utilization"]),
@@ -195,8 +208,11 @@ st.session_state["chosen_scenario"] = {
 cs = st.session_state["chosen_scenario"]
 st.markdown(f"<div style='font-size:1.05rem;font-weight:700;margin:0.4rem 0 0.5rem'>Selected: {ui.esc(cs['label'])} &nbsp;"
             f"{ui.badge(cs['status'])}</div>", unsafe_allow_html=True)
+s_fte = fte.fte_summary(cs["projected_required_labor_hours"], cs["expected_total_available_hours"])
 ui.kpi_row([
     {"label": "Total available labor", "value": f"{cs['expected_total_available_hours']:,.1f}", "unit": "hrs"},
+    {"label": "FTE gap", "value": f"{s_fte['fte_gap']:+,.2f}", "unit": "shifts",
+     "sub": f"Required {s_fte['required_fte']:,.2f} · available {s_fte['available_fte']:,.2f}"},
     {"label": "Projected capacity gap", "value": f"{cs['capacity_gap_hours']:+,.1f}", "unit": "hrs", "sub": cs["status"], "status": cs["status"]},
     {"label": "Projected backlog risk", "value": cs["backlog_risk"], "status": cs["backlog_risk"]},
     {"label": "Estimated labor cost", "value": ui.fmt_money(cs["projected_total_labor_cost"])},

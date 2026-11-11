@@ -14,6 +14,11 @@ LABELS={'workload':'Incoming workload (WLU)','productivity':'Worker productivity
 st.title('Model Validation')
 st.caption('Historical synthetic data · evidence for model reliability, not production guarantees')
 
+# ---- Week 12: four-method forecasting comparison (read from saved evaluation results) ----
+from src import comparison_ui
+comparison_ui.render(key='mv_cmp')
+st.divider()
+
 source=ROOT/'models'/'evaluation.json'
 if not source.exists():
     st.error('Missing models/evaluation.json. Copy your original models folder here.')

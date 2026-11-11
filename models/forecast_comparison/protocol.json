@@ -1,0 +1,36 @@
+{
+  "generated_utc": "2026-11-11 18:53",
+  "runtime_seconds": 50.7,
+  "versions": {
+    "python": "3.13.7",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "prophet": "1.5.0"
+  },
+  "operating_days": 939,
+  "boundaries": {
+    "dev_end": "2024-12-04",
+    "val_start": "2024-12-05",
+    "val_end": "2025-05-27",
+    "test_start": "2025-05-28",
+    "test_end": "2025-12-31"
+  },
+  "forecast_origin_rule": "A forecast issued at the end of operating day t uses outcomes from operating days <= t only. Targets are the next 1..14 operating days. Target-day calendar (weekday, month, peak-season flag, published holidays) is treated as known in advance. Promotions, staffing outcomes, productivity and backlog after the origin are never used.",
+  "tuning": "Each configuration was trained on targets observed by the development cut-off and scored on validation origins only. The lowest-validation-MAE configuration was refitted on development + validation targets and scored once on the final period.",
+  "prophet": "Refitted at every forecast origin on all history <= origin; weekly + yearly seasonality and the published holiday calendar from dim_date.",
+  "tabular_models": "Random Forest and XGBoost are trained once per period (on targets <= cut-off) and predict from origin-anchored features. Next-day uses horizon-1 rows; 14-day uses one direct model pooled over horizons 1..14 with horizon as a feature (no recursive use of predictions).",
+  "weekday_average": "Expanding mean of all observations on the target's weekday up to and including the origin day.",
+  "scoring": "Next day: every origin whose next operating day is in the period. 14 days: origins whose complete 14-day window lies inside the period; all 14 horizons pooled. Identical origins/targets for all methods.",
+  "peak_demand_definition": "Target days whose actual workload >= 418.6 WLU (90th percentile of the development period). Classification is post hoc and is used only for diagnostics.",
+  "bias_sign": "Bias = mean(actual - forecast). Positive = under-forecast.",
+  "final_period_status": "Retrospective: the final period (same dates as the Week 11 final test) was already viewed in Week 11. It was not used for any tuning or selection here, but it is not an untouched test.",
+  "limitations": [
+    "Fully synthetic data; results describe internal simulated performance only.",
+    "Validation MAE of tuned methods is slightly optimistic because configurations were selected on the same window.",
+    "Overlapping 14-day windows reuse target days; forecasts are not independent observations.",
+    "Scheduled staffing is constant (25 workers / 200 hours), so no model learns staffing effects on productivity.",
+    "Promotion flags are excluded because a timestamped promotion calendar is not available."
+  ]
+}

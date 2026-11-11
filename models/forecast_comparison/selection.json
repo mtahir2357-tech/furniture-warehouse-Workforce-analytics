@@ -1,0 +1,82 @@
+{
+  "productivity": {
+    "fourteen_day": {
+      "model": "weekday_average",
+      "config": "expanding_same_weekday",
+      "validation_mae": 0.07163067174369747,
+      "validation_rmse": 0.09338727758451675,
+      "validation_wape_pct": 4.354595782378511,
+      "validation_bias": 0.004043559348739491,
+      "validation_improvement_vs_baseline_pct": null,
+      "validation_runner_up": "xgboost",
+      "validation_margin_vs_runner_up_pct": 2.323789497407746,
+      "validation_dm_p_vs_baseline": null,
+      "final_mae": 0.07358274548440065,
+      "final_rank": 1,
+      "final_improvement_vs_baseline_pct": null,
+      "final_dm_p_vs_baseline": null,
+      "final_best_model": "weekday_average",
+      "rule": "Lowest validation MAE; RMSE, WAPE, bias and peak-day error reported as supporting evidence.",
+      "significantly_better_than_baseline": false
+    },
+    "next_day": {
+      "model": "random_forest",
+      "config": "enhanced_leaf16",
+      "validation_mae": 0.07115309395973156,
+      "validation_rmse": 0.09299711855184713,
+      "validation_wape_pct": 4.323234189146704,
+      "validation_bias": 0.005579859060402685,
+      "validation_improvement_vs_baseline_pct": 0.022208252869650585,
+      "validation_runner_up": "weekday_average",
+      "validation_margin_vs_runner_up_pct": 0.022208252869650585,
+      "validation_dm_p_vs_baseline": 0.9872374799496605,
+      "final_mae": 0.07462952406417112,
+      "final_rank": 2,
+      "final_improvement_vs_baseline_pct": -0.7844896242474675,
+      "final_dm_p_vs_baseline": 0.6124354236010122,
+      "final_best_model": "weekday_average",
+      "rule": "Lowest validation MAE; RMSE, WAPE, bias and peak-day error reported as supporting evidence.",
+      "significantly_better_than_baseline": false
+    }
+  },
+  "workload": {
+    "fourteen_day": {
+      "model": "prophet",
+      "config": "additive_cps005",
+      "validation_mae": 60.59101905567227,
+      "validation_rmse": 77.12028997193994,
+      "validation_wape_pct": 19.449786549748517,
+      "validation_bias": 6.589145915966386,
+      "validation_improvement_vs_baseline_pct": 0.4559423626092654,
+      "validation_runner_up": "weekday_average",
+      "validation_margin_vs_runner_up_pct": 0.4559423626092654,
+      "validation_dm_p_vs_baseline": 0.770721684872691,
+      "final_mae": 65.12777619663383,
+      "final_rank": 2,
+      "final_improvement_vs_baseline_pct": 0.2156546428124538,
+      "final_dm_p_vs_baseline": 0.9006149160619704,
+      "final_best_model": "random_forest",
+      "rule": "Lowest validation MAE; RMSE, WAPE, bias and peak-day error reported as supporting evidence.",
+      "significantly_better_than_baseline": false
+    },
+    "next_day": {
+      "model": "prophet",
+      "config": "additive_cps005",
+      "validation_mae": 62.190447684563765,
+      "validation_rmse": 79.46884809518886,
+      "validation_wape_pct": 19.93425085027977,
+      "validation_bias": 4.665229832214764,
+      "validation_improvement_vs_baseline_pct": 0.7808281389129366,
+      "validation_runner_up": "weekday_average",
+      "validation_margin_vs_runner_up_pct": 0.7808281389129366,
+      "validation_dm_p_vs_baseline": 0.7448746890583788,
+      "final_mae": 64.32812589304812,
+      "final_rank": 1,
+      "final_improvement_vs_baseline_pct": 0.17082466367396285,
+      "final_dm_p_vs_baseline": 0.9451848560523859,
+      "final_best_model": "prophet",
+      "rule": "Lowest validation MAE; RMSE, WAPE, bias and peak-day error reported as supporting evidence.",
+      "significantly_better_than_baseline": false
+    }
+  }
+}
