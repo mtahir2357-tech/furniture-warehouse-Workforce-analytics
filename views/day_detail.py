@@ -1,6 +1,7 @@
 import streamlit as st
 
-from src import logic, state, ui
+from src import fte, logic, state, ui
+from src.config import MAX_DAILY_OVERTIME_PER_WORKER, MIN_SCHEDULED_WORKERS, SHIFT_HOURS, WORKER_ROSTER
 
 as_of = state.as_of()
 o = state.current_outlook()
@@ -82,8 +83,47 @@ explain = {
 }
 ui.status_banner(r["status"], explain[r["status"]])
 
-# 5. Risk
-ui.section("5. Backlog and capacity risk")
+# 5. FTE requirement
+ui.section("5. FTE requirement",
+           f"FTE = labor hours ÷ {SHIFT_HOURS:g} (8-hour worker-shift equivalents, not contractual headcount). "
+           "FTE gap = required FTE − available FTE; positive = shortage.")
+f = fte.fte_summary(req, avail)
+f_hi = fte.fte_summary(r["required_at_upper"], avail)
+fte_status = "Shortage" if f["fte_gap"] > 0 else ("Surplus" if f["fte_gap"] < 0 else "Balanced")
+ui.kpi_row([
+    {"label": "Required FTE", "value": f"{fte.round_half_up(f['required_fte']):,.2f}", "unit": "shifts",
+     "sub": f"{req:,.1f} h ÷ {SHIFT_HOURS:g}"},
+    {"label": "Available FTE", "value": f"{fte.round_half_up(f['available_fte']):,.2f}", "unit": "shifts",
+     "sub": f"{avail:,.1f} worker h ÷ {SHIFT_HOURS:g} · managers excluded"},
+    {"label": "FTE gap", "value": f"{fte.round_half_up(f['fte_gap']):+,.2f}", "unit": "shifts", "status": fte_status,
+     "sub": "shortage" if f["fte_gap"] > 0 else ("surplus" if f["fte_gap"] < 0 else "balanced")},
+    {"label": "Additional whole shifts", "value": f"{f['additional_shifts']}", "unit": "× 8 h",
+     "sub": "Rounded up only here" if f["additional_shifts"] else "No extra shifts needed"},
+    {"label": "FTE gap at upper bound", "value": f"{fte.round_half_up(f_hi['fte_gap']):+,.2f}", "unit": "shifts",
+     "sub": f"If workload reaches {hi:,.0f} WLU · {f_hi['additional_shifts']} extra shift(s)"},
+])
+resp = fte.staffing_response(W, prod, 0.0, float(r["planned_regular_hours"]), float(r["availability_ratio"]),
+                             float(r["avg_worker_hourly_rate"]), float(r["projected_manager_labor_cost"]))
+rec = resp["recommended"]
+if resp["shift_change"] > 0 or resp["overtime_hours"] > 0:
+    action = (f"{resp['shift_change']:+d} regular shift(s)" if resp["shift_change"] else "no extra shifts") + \
+             (f" and {resp['overtime_hours']:.1f} overtime hours" if resp["overtime_hours"] > 0 else "")
+elif resp["shift_change"] < 0:
+    action = f"release {-resp['shift_change']} regular shift(s)"
+else:
+    action = "keep the current plan"
+lines = [f"Lowest-cost feasible response: {action} → {rec['scheduled_workers']:.0f} scheduled workers, "
+         f"{fte.round_half_up(rec['available_fte']):,.2f} available FTE, FTE gap {fte.round_half_up(rec['fte_gap']):+,.2f}, "
+         f"labor cost {ui.fmt_money(rec['labor_cost'])} ({ui.fmt_money_delta(rec['labor_cost'] - resp['current']['labor_cost'])} "
+         "vs current plan)."]
+lines += resp["notes"]
+ui.callout(lines, title="Feasible staffing response for this day")
+ui.note(f"Response rules: add whole regular shifts first, use overtime for a small remainder when cheaper, at most "
+        f"{WORKER_ROSTER} scheduled workers, at least {MIN_SCHEDULED_WORKERS} (policy assumption), and up to "
+        f"{MAX_DAILY_OVERTIME_PER_WORKER:g} overtime hours per worker. Like the hours above, this excludes carry-in backlog; the Workforce planning (FTE) page adds it.")
+
+# 6. Risk
+ui.section("6. Backlog and capacity risk")
 util = r["projected_capacity_utilization"]
 ui.kpi_row([
     {"label": "Projected capacity utilization", "value": f"{util:.0%}", "sub": "Required ÷ available hours"},
@@ -111,6 +151,10 @@ elif r["status"] == "Surplus":
     reasons.append(f"Expected available labor ({avail:,.1f} h) exceeds the {req:,.1f} hours the forecast requires.")
 else:
     reasons.append(f"Required ({req:,.1f} h) and available ({avail:,.1f} h) labor are within ±{state.tol():.0f} hours.")
+reasons.append(f"In worker-shift terms: {fte.round_half_up(f['required_fte']):,.2f} FTE required vs "
+               f"{fte.round_half_up(f['available_fte']):,.2f} available"
+               + (f", so {f['additional_shifts']} additional 8-hour shift(s) would close the gap." if f["additional_shifts"]
+                  else "."))
 if recent == recent:
     diff = W / recent - 1
     reasons.append(f"Forecast workload is {abs(diff):.0%} {'above' if diff >= 0 else 'below'} the recent 28-day average of {recent:,.0f} WLU "

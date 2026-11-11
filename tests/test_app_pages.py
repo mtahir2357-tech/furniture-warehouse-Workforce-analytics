@@ -50,6 +50,20 @@ class AppPageTests(unittest.TestCase):
         self.assertFalse(at.exception, [e.value for e in at.exception])
         self.assertFalse(at.error, [e.value for e in at.error])
 
+    def test_day_detail_fte(self):
+        at = self.run_page("views/day_detail.py")
+        html = " ".join(m.value for m in at.markdown)
+        self.assertIn("5. FTE requirement", html)
+        self.assertIn("Feasible staffing response for this day", html)
+        # Values shown equal hours / 8 for the selected day (recomputed independently from the outlook).
+        import sys
+        sys.path.insert(0, str(ROOT))
+        from src import logic
+        o = logic.outlook(at.session_state["as_of"], at.session_state["tol"])
+        r = o[o["target_date"] == at.session_state["target_date"]].iloc[0]
+        self.assertIn(f"{r['projected_required_labor_hours'] / 8:,.2f}"[:-1], html)
+        self.assertIn(f"{r['expected_available_regular_hours'] / 8:,.2f}", html)
+
     def test_comparison_controls(self):
         at = self.run_page("views/model_validation.py")
         for kpi in ("workload", "productivity"):
