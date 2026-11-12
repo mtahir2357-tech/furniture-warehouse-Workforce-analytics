@@ -23,7 +23,7 @@ ui.page_header(
 )
 
 xlab = o["target_date"].dt.strftime("%a<br>%b %d")
-tick = o["target_date"].dt.strftime("%a<br>%d")
+tick = o["target_date"].dt.strftime("%a").str[:2] + "<br>" + o["target_date"].dt.strftime("%d")
 n_short = int((o["status"] == "Shortage").sum())
 n_surplus = int((o["status"] == "Surplus").sum())
 worst = o.loc[o["capacity_gap_hours"].idxmin()]
@@ -37,7 +37,7 @@ ui.kpi_row(
         {"label": "Surplus days", "value": n_surplus, "unit": "of 14", "status": "Surplus"},
         {"label": "High capacity-exceedance risk", "value": int((o["exceedance_risk"] == "High").sum()), "unit": "days",
          "sub": "P(workload > baseline capacity) ≥ 50%"},
-        {"label": "Avg. required FTE", "value": f"{o['required_fte'].mean():,.2f}", "unit": "shifts/day",
+        {"label": "Avg. required FTE", "value": f"{o['required_fte'].mean():,.2f}", "unit": "FTE/day",
          "sub": f"vs {o['available_fte'].mean():,.2f} available · peak extra {int(o['additional_shifts'].max())} shift(s)"},
     ]
 )
@@ -62,7 +62,7 @@ with c1:
     )
     ui.status_legend(fig, "bar")
     fig.update_yaxes(title_text="Labor hours", rangemode="tozero")
-    fig.update_xaxes(type="category", tickangle=0, tickfont=dict(size=10), tickmode="array", tickvals=list(xlab), ticktext=list(tick))
+    fig.update_xaxes(type="category", tickangle=0, tickfont=dict(size=9), tickmode="array", tickvals=list(xlab), ticktext=list(tick))
     ui.chart(ui.style_fig(fig, 330))
 with c2:
     ui.section("Forecast workload with 80% range")
@@ -78,7 +78,7 @@ with c2:
     fig.add_scatter(x=xlab, y=o["baseline_capacity_wlu"], mode="lines", name="Baseline capacity",
                     line=dict(color=ui.STATUS["Shortage"]["color"], width=1.5, dash="dot"), hovertemplate="Capacity %{y:,.0f} WLU<extra></extra>")
     fig.update_yaxes(title_text="Weighted workload units", rangemode="tozero")
-    fig.update_xaxes(type="category", tickangle=0, tickfont=dict(size=10), tickmode="array", tickvals=list(xlab), ticktext=list(tick))
+    fig.update_xaxes(type="category", tickangle=0, tickfont=dict(size=9), tickmode="array", tickvals=list(xlab), ticktext=list(tick))
     ui.chart(ui.style_fig(fig, 330))
 
 with st.expander("How reliable are these forecasts? (plain-language guide)"):

@@ -37,7 +37,8 @@ CSS = f"""
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap');
 html, body, [class*="css"], .stMarkdown, .stText, button, input, textarea, select,
 [data-testid="stSidebar"] {{ font-family: {FONT}; }}
-.block-container {{ padding-top: 1.8rem; padding-bottom: 3rem; max-width: 1340px; }}
+/* 4.5rem keeps the page header clear of Streamlit Community Cloud's top toolbar (Share / star / edit / GitHub). */
+.block-container {{ padding-top: 4.5rem; padding-bottom: 3rem; max-width: 1340px; }}
 h1, h2, h3 {{ color: {INK}; letter-spacing: -0.015em; }}
 [data-testid="stSidebar"] .sb-brand {{ font-weight: 800; color: #FFFFFF; font-size: 1.05rem; line-height: 1.25; }}
 [data-testid="stSidebar"] .sb-sub {{ color: #9FB0C8; font-size: 0.8rem; margin: 0.2rem 0 0.8rem; }}
@@ -66,8 +67,9 @@ h1, h2, h3 {{ color: {INK}; letter-spacing: -0.015em; }}
 .kpi.em {{ border-left-color: {BLUE}; background: {BLUE_TINT}; border-color: #D6E1FB; border-left-color: {BLUE}; }}
 .kpi-l {{ color: {MUTED}; font-size: 0.78rem; font-weight: 600; }}
 .kpi-v {{ color: {INK}; font-size: 1.6rem; font-weight: 750; font-variant-numeric: tabular-nums; margin-top: 0.15rem;
-          line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-.kpi-v small {{ font-size: 0.82rem; font-weight: 500; color: {MUTED}; margin-left: 0.2rem; }}
+          line-height: 1.2; white-space: normal; }}
+/* The unit may drop to a second line on narrow cards instead of being cut off with an ellipsis. */
+.kpi-v small {{ font-size: 0.82rem; font-weight: 500; color: {MUTED}; margin-left: 0.2rem; display: inline-block; }}
 .kpi-s {{ color: {MUTED}; font-size: 0.77rem; margin-top: 0.2rem; }}
 
 .badge {{ display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.14rem 0.6rem; border-radius: 999px;
@@ -75,12 +77,13 @@ h1, h2, h3 {{ color: {INK}; letter-spacing: -0.015em; }}
 
 /* 14-day strip */
 .strip {{ display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 6px; padding: 3px 3px 4px; }}
-@media (max-width: 1100px) {{ .strip {{ grid-template-columns: repeat(7, minmax(0, 1fr)); }} }}
+/* Two rows of 7 on laptop-width screens (the sidebar takes ~300 px), one row of 14 on wide screens. */
+@media (max-width: 1400px) {{ .strip {{ grid-template-columns: repeat(7, minmax(0, 1fr)); }} }}
 .tile {{ border-radius: 8px; padding: 0.45rem 0.45rem 0.5rem; min-width: 0; overflow: hidden; background: {CARD};
          border: 1px solid {LINE}; border-top: 4px solid; font-variant-numeric: tabular-nums; }}
 .tile.sel {{ box-shadow: 0 0 0 2.5px {BLUE}; }}
 .tile-d {{ font-size: 0.68rem; color: {MUTED}; white-space: nowrap; }}
-.tile-g {{ font-size: 1.12rem; font-weight: 800; margin-top: 0.2rem; }}
+.tile-g {{ font-size: 1.12rem; font-weight: 800; margin-top: 0.2rem; white-space: nowrap; }}
 .tile-s {{ font-size: 0.64rem; margin-top: 0.1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
 .legend {{ display: flex; gap: 1rem; font-size: 0.78rem; color: {MUTED}; margin-top: 0.55rem; align-items: center; flex-wrap: wrap; }}
 .legend b {{ font-weight: 700; }}
@@ -225,7 +228,7 @@ def day_strip(o: pd.DataFrame, selected=None):
         tiles.append(
             f'<div class="tile{sel}" style="border-top-color:{c["color"]};background:{c["tint"]};" '
             f'title="{esc(r["target_date"].strftime("%A %b %d"))} · {esc(r["status"])}: required {r["projected_required_labor_hours"]:.0f} h, available {r["expected_available_regular_hours"]:.0f} h">'
-            f'<div class="tile-d">{r["target_date"]:%a %b %d}</div>'
+            f'<div class="tile-d">{r["target_date"]:%a %d}</div>'
             f'<div class="tile-g" style="color:{c["dark"]}">{r["capacity_gap_hours"]:+.0f} h</div>'
             f'<div class="tile-s" style="color:{c["dark"]}">{c["icon"]} {esc(flag or r["status"])}</div></div>'
         )
