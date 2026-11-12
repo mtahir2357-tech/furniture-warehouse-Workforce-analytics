@@ -161,9 +161,14 @@ if base["status"] == "Shortage":
         lines.append(f"No predefined option fully closes the gap. The closest leaves {best['capacity_gap_hours']:+.1f} h; "
                      "use the custom scenario below to test a larger response.")
 elif base["status"] == "Surplus":
-    red = acts.loc["S06"]
-    lines.append(f"Reducing regular hours moves the gap to {red['capacity_gap_hours']:+.1f} h ({red['status'].lower()}) "
-                 f"and saves {b_cost - red['projected_total_labor_cost']:,.0f} USD.")
+    if "S06" in acts.index:
+        red = acts.loc["S06"]
+        lines.append(f"Reducing regular hours moves the gap to {red['capacity_gap_hours']:+.1f} h ({red['status'].lower()}) "
+                     f"and saves {b_cost - red['projected_total_labor_cost']:,.0f} USD.")
+    else:
+        why = tbl.set_index("scenario_id").loc["S06", "feasibility_issues"]
+        lines.append("Reducing regular hours is not permitted under the selected staffing policy "
+                     f"({why.rstrip('.')}). Keep the current plan or change the policy in the sidebar.")
 else:
     lines.append("The current plan is within the balanced band; changes mainly trade cost against buffer.")
 for sid in [s for s in ["S02", "S03", "S06"] if s in acts.index]:
@@ -237,9 +242,11 @@ ui.section("Select a staffing option")
 options = ACTION_SCENARIOS + ["CUSTOM"]
 labels = {**SCENARIO_LABELS, "CUSTOM": "Custom (inputs above)"}
 rec = logic.recommend(day, tbl, tol)
+_infeasible = set(tbl.loc[~tbl["feasible"], "scenario_id"]) | ({"CUSTOM"} if not c_feas["feasible"] else set())
 current = st.session_state.get("scenario_choice", rec["scenario_id"])
 choice = st.radio("Staffing option", options, index=options.index(current) if current in options else 0,
-                  format_func=lambda k: labels[k] + ("  (recommended)" if k == rec["scenario_id"] else ""),
+                  format_func=lambda k: labels[k] + ("  (recommended)" if k == rec["scenario_id"] else "")
+                  + ("  (not feasible)" if k in _infeasible else ""),
                   horizontal=True, label_visibility="collapsed")
 st.session_state["scenario_choice"] = choice
 
@@ -251,7 +258,9 @@ else:
     chosen = {**row.to_dict(), "status": row["status"]}
 ch_bud = fte.budget_check(float(chosen["projected_total_labor_cost"]), budget)
 st.session_state["chosen_scenario"] = {
-    "forecast_id": fid, "scenario_id": choice, "label": labels[choice],
+    "forecast_id": fid, "scenario_id": choice,
+    # A custom plan carries its own inputs in the label so the decision log stays self-explanatory.
+    "label": (f"Custom ({custom['reg']:g} h regular + {custom['ot']:g} h OT)" if choice == "CUSTOM" else labels[choice]),
     "planned_regular_hours": float(chosen["planned_regular_hours"]),
     "planned_overtime_hours": float(chosen["planned_overtime_hours"]),
     "expected_total_available_hours": float(chosen["expected_total_available_hours"]),
