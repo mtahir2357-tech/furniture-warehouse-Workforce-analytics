@@ -115,14 +115,16 @@ with g1:
     fig = go.Figure(go.Bar(
         y=order["scenario_label"], x=order["capacity_gap_hours"], orientation="h",
         marker_color=[ui.STATUS_CHART[s] for s in order["status"]],
-        text=[f"{v:+.1f} h" for v in order["capacity_gap_hours"]], textposition="outside", cliponaxis=False,
+        # "auto": inside long bars, outside short ones, so labels never run into the scenario names.
+        text=[f"{v:+.1f} h" for v in order["capacity_gap_hours"]], textposition="auto", cliponaxis=False,
+        insidetextfont=dict(color="white"),
         hovertemplate="%{y}<br>Gap %{x:+.1f} h<extra></extra>",
     ))
     fig.add_vrect(x0=-tol, x1=tol, fillcolor=ui.STATUS["Balanced"]["tint"], line_width=0, layer="below")
     fig.add_vline(x=0, line_color=ui.MUTED, line_width=1)
     lo_x, hi_x = min(order["capacity_gap_hours"].min(), -tol), max(order["capacity_gap_hours"].max(), tol)
     span = hi_x - lo_x
-    fig.update_xaxes(title_text="Hours (negative = shortage)", range=[lo_x - 0.22 * span, hi_x + 0.22 * span])
+    fig.update_xaxes(title_text="Hours (− = shortage)", range=[lo_x - 0.22 * span, hi_x + 0.22 * span])
     ui.chart(ui.style_fig(fig, 300, legend=False))
 with g2:
     ui.section("Projected labor cost by scenario")
@@ -134,9 +136,13 @@ with g2:
     ))
     if budget is not None:
         fig.add_vline(x=budget, line_color=ui.STATUS["Shortage"]["color"], line_dash="dash",
-                      annotation_text=f"Budget ${budget:,.0f}", annotation_position="top")
-    fig.update_xaxes(title_text="USD per day", range=[0, max(order["projected_total_labor_cost"].max(), budget or 0) * 1.18])
-    ui.chart(ui.style_fig(fig, 300, legend=False))
+                      annotation_text=f"Budget ${budget:,.0f}", annotation_position="top",
+                      annotation_font=dict(size=11, color=ui.STATUS["Shortage"]["dark"]))
+    fig.update_xaxes(title_text="USD per day", range=[0, max(order["projected_total_labor_cost"].max(), budget or 0) * 1.32])
+    fig = ui.style_fig(fig, 300, legend=False)
+    if budget is not None:
+        fig.update_layout(margin=dict(t=34))  # room for the budget label above the plot area
+    ui.chart(fig)
 
 # ---- Trade-offs -------------------------------------------------------------
 ui.section("Trade-offs")

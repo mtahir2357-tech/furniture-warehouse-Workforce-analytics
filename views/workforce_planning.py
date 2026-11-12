@@ -99,9 +99,9 @@ ui.note(source_note)
 n_short = int((plan['fte_gap'] > 1e-9).sum())
 infeasible = int((~plan['rec_feasible']).sum())
 ui.kpi_row([
-    {'label': 'Avg. required FTE', 'value': f"{plan['required_fte'].mean():,.2f}", 'unit': 'shifts/day',
+    {'label': 'Avg. required FTE', 'value': f"{plan['required_fte'].mean():,.2f}", 'unit': 'FTE/day',
      'sub': f"incl. carry-in backlog · {plan['workload_wlu'].mean():,.0f} WLU/day forecast"},
-    {'label': 'Avg. available FTE', 'value': f"{plan['available_fte'].mean():,.2f}", 'unit': 'shifts/day',
+    {'label': 'Avg. available FTE', 'value': f"{plan['available_fte'].mean():,.2f}", 'unit': 'FTE/day',
      'sub': f"{plan['available_hours'].mean():,.1f} worker hrs/day"},
     {'label': 'Days with an FTE shortage', 'value': n_short, 'unit': f'of {len(plan)}',
      'status': 'Shortage' if n_short else 'Balanced',
