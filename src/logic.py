@@ -131,16 +131,20 @@ def recommend(day: pd.Series, table: pd.DataFrame, tol: float) -> dict:
     t = table.set_index("scenario_id")
     base = t.loc["S01"]
     keep = {"scenario_id": "S01", "full": True, "standby": False}
+    # Options that break the staffing policy (when a 'feasible' column is supplied) are never recommended.
+    ok = (lambda sid: bool(t.loc[sid, "feasible"])) if "feasible" in t.columns else (lambda sid: True)
     if day["status"] == "Shortage":
-        opts = t.loc[["S02", "S03"]]
+        opts = t.loc[[s for s in ("S02", "S03") if ok(s)]]
         fixes = opts[opts["status"] != "Shortage"].sort_values("projected_total_labor_cost")
         if len(fixes):
             pick = {"scenario_id": fixes.index[0], "full": True, "standby": False}
-        else:
+        elif len(opts):
             pick = {"scenario_id": opts["capacity_gap_hours"].idxmax(), "full": False, "standby": False}
+        else:
+            pick = {**keep, "full": False}
     elif day["status"] == "Surplus":
         red = t.loc["S06"]
-        pick = {"scenario_id": "S06", "full": True, "standby": False} if red["status"] != "Shortage" else keep
+        pick = {"scenario_id": "S06", "full": True, "standby": False} if red["status"] != "Shortage" and ok("S06") else keep
     else:
         pick = {**keep, "standby": t.loc["S04", "status"] == "Shortage" and day["exceedance_risk"] == "High"}
     row = t.loc[pick["scenario_id"]]

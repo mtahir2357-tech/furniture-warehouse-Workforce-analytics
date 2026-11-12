@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import data, logic, ui
+from src import data, logic, reliability, state, ui
 
 ui.page_header(
     "Forecast accuracy",
@@ -35,6 +35,9 @@ ui.kpi_row([
     {"label": "80% range coverage", "value": f"{m['coverage']:.1%}", "sub": "Target 80%", "emphasis": True},
 ])
 ui.note(f"{m['n']:,} forecast rows · {sub['forecast_run_id'].nunique():,} forecast runs")
+ui.callout(reliability.manager_lines(reliability.summary(sub), shift_hours=state.policy().shift_hours,
+                                     scope=" for the selected dates and horizons"),
+           title="What this means for staffing")
 
 # ---- By horizon -------------------------------------------------------------
 sub = sub.assign(covered=(sub["actual_workload_units"] >= sub["lower_80_workload_units"])

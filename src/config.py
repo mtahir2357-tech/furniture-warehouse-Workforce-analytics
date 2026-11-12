@@ -25,6 +25,9 @@ WEEKLY_HOUR_CAP = 50.0
 MAX_DAILY_OVERTIME_PER_WORKER = 2.0
 # Planning-policy assumption (not in the source data): never schedule fewer than 20 workers.
 MIN_SCHEDULED_WORKERS = 20
+# Optional daily labor budget (off by default). Starting value when enabled: an illustrative figure close to
+# the current plan's typical daily cost in the synthetic data (~$3,700), not a company number.
+DEFAULT_DAILY_LABOR_BUDGET = 4000.0
 
 # Probability that forecast workload exceeds baseline capacity: <low = Low, <high = Moderate, else High
 EXCEEDANCE_RISK_BANDS = (0.25, 0.50)

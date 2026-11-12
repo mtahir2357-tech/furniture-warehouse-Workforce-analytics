@@ -54,7 +54,7 @@ class AppPageTests(unittest.TestCase):
         at = self.run_page("views/day_detail.py")
         html = " ".join(m.value for m in at.markdown)
         self.assertIn("5. FTE requirement", html)
-        self.assertIn("Feasible staffing response for this day", html)
+        self.assertIn("Recommended response for this day (incl. carry-in backlog)", html)
         # Values shown equal hours / 8 for the selected day (recomputed independently from the outlook).
         import sys
         sys.path.insert(0, str(ROOT))

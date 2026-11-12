@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import decisions, logic, state, ui
+from src import backlog, decisions, fte, logic, state, ui
 
 as_of = state.as_of()
 tol = state.tol()
@@ -16,10 +16,20 @@ ACTION_TEXT = {
 }
 
 # ---- Recommendations for all 14 days ---------------------------------------
+# Statuses and recommendations include carry-in backlog from the shared 14-day projection (src/backlog.py),
+# and only options that are feasible under the sidebar staffing policy are recommended.
+pol, budget = state.policy(), state.budget()
+plan = state.carry_plan()
 recs = []
 for _, day in o.iterrows():
-    tbl = logic.scenario_table(int(day["forecast_id"]), tol)
+    carry = backlog.carry_in(plan, day["target_date"])["response"]
+    tbl = backlog.with_carry_in(logic.scenario_table(int(day["forecast_id"]), tol), carry, tol, pol)
+    day = day.copy()
+    day["new_work_status"] = day["status"]
+    day["status"] = tbl.set_index("scenario_id").loc["S01", "status"]
+    day["carry_in_wlu"] = carry
     rec = logic.recommend(day, tbl, tol)
+    rec["budget"] = fte.budget_check(float(rec["row"]["projected_total_labor_cost"]), budget)
     recs.append({"day": day, "rec": rec, "s04": tbl.set_index("scenario_id").loc["S04"]})
 approved = decisions.latest_for_run(as_of)
 
@@ -41,7 +51,8 @@ def log_row(item) -> dict:
         "expected_available_hours": round(float(row["expected_total_available_hours"]), 1),
         "projected_capacity_gap": round(float(row["capacity_gap_hours"]), 1),
         "projected_labor_cost": round(float(row["projected_total_labor_cost"]), 2),
-        "notes": "Approved on the decision board",
+        "notes": "Approved on the decision board (gap incl. carry-in backlog)"
+                 + (" [over daily labor budget]" if r["budget"] and not r["budget"]["within"] else ""),
     }
 
 
@@ -125,9 +136,12 @@ def action_card(item, idx: int):
     if sid == "S01" and r["standby"]:
         rec_html = (f"<b>Keep current plan, overtime on standby</b><span class='cost'>High-demand test gives "
                     f"{item['s04']['capacity_gap_hours']:+.1f} h · exceedance risk {d['probability_capacity_exceeded']:.0%}</span>")
-    elif sid == "S01":
+    elif sid == "S01" and r["full"]:
         rec_html = ("<b>Keep current plan</b><span class='cost'>Reducing hours would create a shortage</span>"
                     if d["status"] == "Surplus" else "<b>Keep current plan</b>")
+    elif not r["full"] and sid == "S01":
+        rec_html = ("<b>No feasible predefined option</b><span class='cost'>Check the staffing policy or test a custom "
+                    "scenario</span>")
     else:
         verb = "saves" if r["cost_delta"] < 0 else "adds"
         partial = "" if r["full"] else " · closes most of the gap; consider a custom option"
@@ -138,7 +152,10 @@ def action_card(item, idx: int):
         with left:
             st.markdown(
                 f'<div class="ac"><div class="ac-date">{d["target_date"]:%a %b %d} &nbsp;{ui.badge(d["status"])}'
-                f'<small>Day {int(d["horizon_operating_days"])} of 14 · forecast {d["forecast_workload_units"]:,.0f} WLU</small></div>'
+                f'<small>Day {int(d["horizon_operating_days"])} of 14 · forecast {d["forecast_workload_units"]:,.0f} WLU'
+                + (f' + {d["carry_in_wlu"]:,.0f} carry-in' if d["carry_in_wlu"] > 0.5 else '')
+                + (f' · <b style="color:{ui.STATUS["Shortage"]["dark"]}">{r["budget"]["label"].lower()}</b>'
+                   if r["budget"] and not r["budget"]["within"] else '') + '</small></div>'
                 f'<div class="ac-gap"><span style="color:{c_now["dark"]}">{r["gap_before"]:+.1f} h</span><span class="arr">→</span>'
                 f'<span style="color:{c_after["dark"]}">{r["gap_after"]:+.1f} h</span></div>'
                 f'<div class="ac-rec">{rec_html}</div></div>',
@@ -169,6 +186,9 @@ if calm_items:
         for k, item in enumerate(calm_items):
             action_card(item, 100 + k)
 
-ui.note("Recommendation rule: for a shortage, the cheapest predefined option that removes it; for a surplus, cutting hours "
-        "unless that creates a shortage; otherwise keep the plan. Approvals are saved to data/decision_log.csv. "
-        "The manager makes the final decision.")
+ui.note("Recommendation rule: for a shortage, the cheapest feasible predefined option that removes it; for a surplus, "
+        "cutting hours unless that creates a shortage; otherwise keep the plan. Gaps include carry-in backlog projected by the "
+        "Workforce planning (FTE) page; options outside the sidebar staffing policy (roster, overtime cap, minimum of "
+        f"{pol.min_workers} workers — a project assumption) are never recommended"
+        + (f"; options above the ${budget:,.0f} daily labor budget are flagged" if budget is not None else "")
+        + ". Approvals are saved to data/decision_log.csv. The manager makes the final decision.")
