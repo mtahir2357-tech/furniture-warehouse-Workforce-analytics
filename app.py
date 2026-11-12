@@ -56,6 +56,31 @@ with st.sidebar:
         "Default is one 8-hour shift. This is an MVP rule, not an industry threshold.",
     )
 
+    # Shared staffing policy and optional labor budget, used by every page.
+    from src import config as _c
+    for _k, _v in {"pol_shift": _c.SHIFT_HOURS, "pol_week": _c.FULL_TIME_WEEK_HOURS, "pol_roster": _c.WORKER_ROSTER,
+                   "pol_min": _c.MIN_SCHEDULED_WORKERS, "pol_ot": _c.MAX_DAILY_OVERTIME_PER_WORKER,
+                   "pol_cap": _c.WEEKLY_HOUR_CAP, "budget_on": False, "budget_amt": _c.DEFAULT_DAILY_LABOR_BUDGET}.items():
+        st.session_state.setdefault(_k, _v)
+    with st.expander("Staffing policy & labor budget"):
+        st.number_input("Worker roster (max per day)", 1, 200, step=1, key="pol_roster",
+                        help="30 warehouse workers in dim_employee.")
+        st.number_input("Minimum scheduled workers", 0, 200, step=1, key="pol_min",
+                        help="Project assumption, not from the source data. Default 20.")
+        st.number_input("Max overtime per worker-day (h)", 0.0, 6.0, step=0.5, key="pol_ot",
+                        help="(50 − 40) weekly hours ÷ 5 shifts = 2 h by default.")
+        st.number_input("Standard shift (h)", 4.0, 12.0, step=0.5, key="pol_shift")
+        st.number_input("Full-time week (h)", 20.0, 60.0, step=1.0, key="pol_week")
+        st.number_input("Weekly hour cap per worker (h)", 20.0, 80.0, step=1.0, key="pol_cap",
+                        help="50 h in dim_employee.")
+        st.toggle("Use a daily labor budget", key="budget_on")
+        st.number_input("Daily labor budget (USD)", 0.0, 100000.0, step=100.0, key="budget_amt",
+                        disabled=not st.session_state["budget_on"],
+                        help="Optional. Options above it are flagged, never hidden or changed.")
+        st.caption("Minimum staffing (default 20 workers) is a **project assumption**, not source data.")
+    if st.session_state.pop("policy_error", None):
+        st.error("Policy settings are inconsistent (e.g. minimum above roster); defaults are used.")
+
 # ---- Navigation -------------------------------------------------------------
 pages = {
     "Quick decision": [
