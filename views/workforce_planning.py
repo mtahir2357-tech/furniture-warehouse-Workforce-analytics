@@ -7,11 +7,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import data, logic, ui
+from src import backlog, data, fte, logic, reliability, state, ui
 from src import model_comparison as mc
-from src.config import (FULL_TIME_WEEK_HOURS, MAX_DAILY_OVERTIME_PER_WORKER, MIN_SCHEDULED_WORKERS,
-                        SHIFT_HOURS, WORKER_ROSTER)
-from src.fte import StaffingPolicy, horizon_plan, weekly_fte
+from src.fte import horizon_plan, weekly_fte
 
 as_of = st.session_state['as_of']
 tol = st.session_state['tol']
@@ -22,13 +20,12 @@ raw = logic.outlook(as_of, tol)
 if raw.empty:
     st.warning('No forecast days in this run.')
     st.stop()
-history = data.daily()
-# A run made at the end of its operating day can use that day's observed closing backlog.
-known = history.loc[history['date'] <= as_of]
-if known.empty:
-    st.error('No backlog history is available by this forecast date.')
+# A run made at the end of its operating day can use that day's observed closing backlog (shared helper).
+try:
+    carry = backlog.opening_backlog(data.daily(), as_of)
+except ValueError as exc:
+    st.error(str(exc))
     st.stop()
-carry = float(known.iloc[-1]['ending_backlog_wlu'])
 
 # ---- Forecast source ----------------------------------------------------------------------
 SOURCES = {'pipeline': 'Original 14-day planning forecast',
@@ -41,22 +38,12 @@ buffer_on = c2.toggle('Plan for higher workload (80th-percentile under-forecast)
                       help='Adds the 80th percentile of past under-forecasts to each day\'s workload to show '
                            'the staffing needed if demand comes in high.')
 
-with st.expander('Staffing policy and FTE assumptions', expanded=False):
-    p1, p2, p3, p4, p5 = st.columns(5)
-    shift = p1.number_input('Standard shift (hours)', 4.0, 12.0, SHIFT_HOURS, 0.5, key='wp_shift')
-    week = p2.number_input('Full-time week (hours)', 20.0, 60.0, FULL_TIME_WEEK_HOURS, 1.0, key='wp_week')
-    roster = p3.number_input('Worker roster (max scheduled)', 1, 200, WORKER_ROSTER, 1, key='wp_roster')
-    min_w = p4.number_input('Minimum scheduled workers', 0, 200, MIN_SCHEDULED_WORKERS, 1, key='wp_min')
-    ot_cap = p5.number_input('Max overtime per worker-day (h)', 0.0, 6.0, MAX_DAILY_OVERTIME_PER_WORKER, 0.5, key='wp_ot')
-    st.caption('Defaults: 8-hour shift and 40-hour week (requested standard); roster of 30 workers and a 50-hour weekly '
-               'cap from dim_employee (10 overtime hours per week ≈ 2 per shift); the 20-worker minimum is a planning-policy '
-               'assumption, not source data. Manager hours are never counted as productive capacity.')
-try:
-    policy = StaffingPolicy(shift_hours=shift, week_hours=week, roster_workers=int(roster), min_workers=int(min_w),
-                            max_ot_per_worker_day=ot_cap)
-except ValueError as exc:
-    st.error(str(exc))
-    st.stop()
+policy = state.policy()
+budget = state.budget()
+ui.note(f"Staffing policy (sidebar → Staffing policy & labor budget): {policy.shift_hours:g}-hour shift, "
+        f"{policy.week_hours:g}-hour week, roster {policy.roster_workers}, minimum {policy.min_workers} workers "
+        f"(project assumption, not source data), overtime ≤ {policy.max_ot_per_worker_day:g} h per worker-day"
+        + (f", daily labor budget ${budget:,.0f}." if budget is not None else "; no labor budget set."))
 
 base = pd.DataFrame({
     'target_date': raw['target_date'], 'h': raw['horizon_operating_days'],
@@ -68,10 +55,12 @@ if source == 'pipeline':
                        productivity=raw['expected_productivity_wlu_per_hour'].to_numpy())
     if buffer_on:
         days['workload'] = raw['upper_80_workload_units'].to_numpy()
+        _rel = reliability.summary(data.forecasts())
     source_note = ('Original rule-based forecast (same-weekday + recent-mean workload; 28-day mean productivity), '
                    'made with data through the day before the forecast run.'
-                   + (' Higher-workload view uses the pipeline\'s upper 80% bound, which earlier validation found to '
-                      'be under-covered at short horizons (uncalibrated).' if buffer_on else ''))
+                   + (f' Higher-workload view uses the pipeline\'s upper 80% bound; across all saved runs the actual '
+                      f'workload stayed inside the 80% range on {_rel["coverage_80"]:.0%} of days and exceeded the upper '
+                      f'bound on {_rel["above_upper"]:.0%}.' if buffer_on else ''))
 else:
     if not model_ok:
         st.warning('Model forecasts are missing; run `python evaluate_forecasting.py`. Showing the original forecast.')
@@ -162,9 +151,12 @@ show = pd.DataFrame({
     'Capacity WLU': plan['capacity_wlu'],
     'Ending backlog WLU': plan['ending_backlog_wlu'],
     'Labor cost': plan['labor_cost'],
+    'Required FTE (with responses)': plan['rec_required_fte'],
     'Response': [(f"{int(s):+d} shift(s)" if s else 'No shift change') + (f", +{o:.1f} OT h" if o > 1e-9 else '')
                  for s, o in zip(plan['rec_shift_change'], plan['rec_overtime_hours'])],
     'Response cost': plan['rec_labor_cost'],
+    'Budget': ['—' if b is None else ('Within' if b['within'] else b['label'])
+               for b in (fte.budget_check(c, budget) for c in plan['rec_labor_cost'])],
     'Feasible': plan['rec_feasible'].map({True: 'Yes', False: 'No'}),
     'Status': plan['status'].map(lambda v: f"{ui.STATUS[v]['icon']} {v}"),
 })
@@ -172,16 +164,19 @@ st.dataframe(show, hide_index=True, width='stretch', height=35 * (len(show) + 1)
     'Date': st.column_config.DateColumn(format='ddd MMM DD'),
     'Forecast WLU': st.column_config.NumberColumn(format='%.0f'),
     'Productivity (WLU/h)': st.column_config.NumberColumn(format='%.3f'),
-    'Carry-in WLU': st.column_config.NumberColumn(format='%.0f'),
     'Required hrs': st.column_config.NumberColumn(format='%.1f'),
     'Available hrs': st.column_config.NumberColumn(format='%.1f'),
-    'Required FTE': st.column_config.NumberColumn(format='%.2f'),
     'Available FTE': st.column_config.NumberColumn(format='%.2f'),
     'FTE gap': st.column_config.NumberColumn(format='%+.2f', help='Required − available FTE; positive = shortage'),
     'Extra shifts': st.column_config.NumberColumn(format='%d', help='Whole 8-hour worker-shift equivalents (rounded up)'),
     'Capacity WLU': st.column_config.NumberColumn(format='%.0f'),
     'Ending backlog WLU': st.column_config.NumberColumn(format='%.0f'),
     'Labor cost': st.column_config.NumberColumn('Labor cost (current)', format='$%.0f'),
+    'Required FTE (with responses)': st.column_config.NumberColumn(format='%.2f',
+        help='Required FTE when earlier days follow their recommended responses (the carry-in used on other pages).'),
+    'Carry-in WLU': st.column_config.NumberColumn('Carry-in WLU (no changes)', format='%.0f'),
+    'Required FTE': st.column_config.NumberColumn('Required FTE (no changes)', format='%.2f'),
+    'Budget': st.column_config.TextColumn('Budget (response)', help='Response cost vs the optional daily labor budget'),
     'Response cost': st.column_config.NumberColumn(format='$%.0f'),
 })
 notes = plan.loc[plan['rec_notes'] != '', ['target_date', 'rec_notes']]
