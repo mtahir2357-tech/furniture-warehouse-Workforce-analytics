@@ -41,10 +41,14 @@ class StaffingPolicy:
     min_workers: int = MIN_SCHEDULED_WORKERS
     max_ot_per_worker_day: float = MAX_DAILY_OVERTIME_PER_WORKER
     overtime_multiplier: float = OVERTIME_MULTIPLIER
+    weekly_hour_cap: float = WEEKLY_HOUR_CAP
+    operating_days_per_week: int = 6
 
     def __post_init__(self):
         if self.shift_hours <= 0 or self.week_hours <= 0:
             raise ValueError("Shift and week hours must be positive.")
+        if self.weekly_hour_cap < self.week_hours:
+            raise ValueError("Weekly hour cap cannot be below the full-time week.")
         if self.min_workers < 0 or self.roster_workers < self.min_workers:
             raise ValueError("Roster must be at least the minimum staffing level.")
         if self.max_ot_per_worker_day < 0:
@@ -54,6 +58,51 @@ class StaffingPolicy:
     def weekly_shift_cap(self) -> float:
         """Regular shifts the roster can work in one week (each worker = week_hours / shift_hours shifts)."""
         return self.roster_workers * self.week_hours / self.shift_hours
+
+
+def check_feasibility(regular_hours: float, overtime_hours: float, policy: StaffingPolicy = StaffingPolicy()) -> dict:
+    """Validate one day's staffing plan against operational constraints.
+
+    Infeasible (hard limits): negative hours; more scheduled workers than the roster; fewer than
+    the minimum staffing level (project assumption); overtime above the per-worker daily cap, or
+    overtime with nobody scheduled. Warnings (allowed, but flagged): partial shifts and a daily
+    headcount above what the roster can sustain over a full operating week.
+    """
+    issues, warnings = [], []
+    reg, ot = float(regular_hours), float(overtime_hours)
+    if not (math.isfinite(reg) and math.isfinite(ot)):
+        return {"feasible": False, "issues": ["Hours must be finite numbers."], "warnings": [],
+                "scheduled_workers": float("nan"), "overtime_cap": 0.0}
+    if reg < 0 or ot < 0:
+        issues.append("Hours cannot be negative.")
+    workers = max(reg, 0.0) / policy.shift_hours
+    ot_cap = workers * policy.max_ot_per_worker_day
+    if workers > policy.roster_workers + 1e-9:
+        issues.append(f"{workers:.1f} scheduled workers exceed the roster of {policy.roster_workers} "
+                      f"({policy.roster_workers * policy.shift_hours:g} regular hours maximum).")
+    if workers < policy.min_workers - 1e-9:
+        issues.append(f"{workers:.1f} scheduled workers is below the {policy.min_workers}-worker minimum "
+                      "(project assumption).")
+    if ot > ot_cap + 1e-9:
+        issues.append(f"{ot:g} overtime hours exceed the cap of {ot_cap:g} h "
+                      f"({policy.max_ot_per_worker_day:g} h × {workers:.1f} scheduled workers).")
+    if abs(workers - round(workers)) > 1e-9:
+        warnings.append(f"{reg:g} regular hours is not a whole number of {policy.shift_hours:g}-hour shifts.")
+    sustainable = policy.weekly_shift_cap / policy.operating_days_per_week
+    if not issues and workers > sustainable + 1e-9:
+        warnings.append(f"{workers:.0f} workers is above the {sustainable:g} per day the roster can sustain over a "
+                        f"{policy.operating_days_per_week}-day week; feasible for this day only if other days use fewer.")
+    return {"feasible": not issues, "issues": issues, "warnings": warnings,
+            "scheduled_workers": workers, "overtime_cap": ot_cap}
+
+
+def budget_check(cost: float, budget: float | None) -> dict | None:
+    """Compare a daily labor cost with an optional budget. None when no budget is set."""
+    if budget is None:
+        return None
+    over = float(cost) - float(budget)
+    return {"within": over <= 1e-9, "over_by": max(0.0, over), "headroom": max(0.0, -over),
+            "label": "Within budget" if over <= 1e-9 else f"Over budget by ${over:,.0f}"}
 
 
 def round_half_up(x: float, digits: int = 2) -> float:
@@ -187,6 +236,8 @@ def horizon_plan(days: pd.DataFrame, initial_backlog: float, policy: StaffingPol
             "capacity_wlu": cur["capacity_wlu"],
             "ending_backlog_wlu": cur["ending_backlog_wlu"],
             "labor_cost": cur["labor_cost"],
+            "rec_beginning_backlog_wlu": carry_rec,
+            "rec_required_fte": rec["required_fte"],
             "rec_shift_change": resp["shift_change"],
             "rec_overtime_hours": resp["overtime_hours"],
             "rec_scheduled_workers": rec["scheduled_workers"],
@@ -212,6 +263,6 @@ def horizon_plan(days: pd.DataFrame, initial_backlog: float, policy: StaffingPol
     plan = plan.join(wk, on="week")
     plan["weekly_required_fte"] = plan["week_required_hours"] / policy.week_hours
     plan["week_shift_cap_exceeded"] = plan["week_rec_shifts"] > policy.weekly_shift_cap + 1e-9
-    ot_week_cap = policy.roster_workers * max(0.0, WEEKLY_HOUR_CAP - policy.week_hours)
+    ot_week_cap = policy.roster_workers * max(0.0, policy.weekly_hour_cap - policy.week_hours)
     plan["week_overtime_cap_exceeded"] = plan["week_rec_overtime"] > ot_week_cap + 1e-9
     return plan

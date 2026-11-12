@@ -1,14 +1,15 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-from src import fte, state, ui
+from src import data, fte, reliability, state, ui
 from src.config import SHIFT_HOURS
 
 as_of = state.as_of()
 o = state.current_outlook()
 sel = state.target_row(o)
 # FTE = 8-hour worker-shift equivalents of the same required / available hours shown on this page.
-_f = o.apply(lambda r: fte.fte_summary(r["projected_required_labor_hours"], r["expected_available_regular_hours"]), axis=1)
+_sh = state.policy().shift_hours
+_f = o.apply(lambda r: fte.fte_summary(r["projected_required_labor_hours"], r["expected_available_regular_hours"], _sh), axis=1)
 o["required_fte"] = [x["required_fte"] for x in _f]
 o["available_fte"] = [x["available_fte"] for x in _f]
 o["fte_gap"] = [x["fte_gap"] for x in _f]
@@ -80,6 +81,9 @@ with c2:
     fig.update_xaxes(type="category", tickangle=0, tickfont=dict(size=10), tickmode="array", tickvals=list(xlab), ticktext=list(tick))
     ui.chart(ui.style_fig(fig, 330))
 
+with st.expander("How reliable are these forecasts? (plain-language guide)"):
+    ui.callout(reliability.manager_lines(reliability.summary(data.forecasts()), shift_hours=state.policy().shift_hours,
+                                         scope=" across all saved 14-day forecasts"))
 ui.section("Daily staffing outlook", "Select a row to review that day in detail.")
 table = o.assign(
     Date=o["target_date"].dt.strftime("%a %b %d"),
@@ -105,9 +109,9 @@ event = st.dataframe(
         "expected_available_regular_hours": st.column_config.NumberColumn("Available hrs", format="%.1f"),
         "capacity_gap_hours": st.column_config.NumberColumn("Capacity gap (hrs)", format="%+.1f"),
         "required_fte": st.column_config.NumberColumn("Required FTE", format="%.2f",
-                                                      help=f"Required labor hours ÷ {SHIFT_HOURS:g} (worker-shift equivalents)"),
+                                                      help=f"Required labor hours ÷ {_sh:g} (worker-shift equivalents)"),
         "available_fte": st.column_config.NumberColumn("Available FTE", format="%.2f",
-                                                       help=f"Available worker hours ÷ {SHIFT_HOURS:g}; manager hours excluded"),
+                                                       help=f"Available worker hours ÷ {_sh:g}; manager hours excluded"),
         "fte_gap": st.column_config.NumberColumn("FTE gap", format="%+.2f", help="Required − available FTE (positive = shortage)"),
         "additional_shifts": st.column_config.NumberColumn("Extra shifts", format="%d",
                                                            help="Whole 8-hour worker-shift equivalents to cover a shortage (rounded up)"),
@@ -141,7 +145,8 @@ with cA:
 with cB:
     if st.button("Review selected day", type="primary", width="stretch"):
         st.switch_page("views/day_detail.py")
-ui.note(f"FTE = 8-hour worker-shift equivalents (hours ÷ {SHIFT_HOURS:g}), not contractual full-time headcount. "
-        "Required FTE uses the forecast workload ÷ expected productivity, as in the required-hours column; carry-in backlog "
-        "is added on the Workforce planning (FTE) page.")
+ui.note(f"FTE = 8-hour worker-shift equivalents (hours ÷ {_sh:g}), not contractual full-time headcount. "
+        "Figures on this page are new work only (forecast workload ÷ expected productivity), as in the required-hours "
+        "column. Selected day detail, Staffing scenarios, the Decision board and Workforce planning (FTE) also add "
+        "carry-in backlog from one shared 14-day projection.")
 ui.note("Decision supported: which future operating days require staffing review?")
