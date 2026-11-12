@@ -1,10 +1,8 @@
-from datetime import datetime
 
 import pandas as pd
 import streamlit as st
 
-from src import backlog, data, fte, logic, state, ui
-from src.config import DECISION_LOG
+from src import backlog, data, decisions, fte, logic, state, ui
 
 as_of = state.as_of()
 o = state.current_outlook()
@@ -20,9 +18,8 @@ ui.page_header(
 
 
 def load_log() -> pd.DataFrame:
-    if DECISION_LOG.exists():
-        return pd.read_csv(DECISION_LOG)
-    return pd.DataFrame()
+    log = decisions.load()
+    return pd.DataFrame() if log.empty else log
 
 
 log = load_log()
@@ -57,23 +54,25 @@ ui.kpi_row([
 
 # ---- Selected scenario ------------------------------------------------------
 cs = st.session_state.get("chosen_scenario")
+# The current (baseline) plan for this day, always computed: it is what "Keep current plan" and "Monitor" record.
+_carry = backlog.carry_in(state.carry_plan(), r["target_date"])["response"]
+base = backlog.with_carry_in(logic.scenario_table(int(r["forecast_id"]), tol), _carry, tol, state.policy()).iloc[0]
+_b = fte.budget_check(float(base["projected_total_labor_cost"]), state.budget())
+baseline = {
+    "forecast_id": int(r["forecast_id"]), "scenario_id": "S01", "label": "Current plan",
+    "planned_regular_hours": base["planned_regular_hours"], "planned_overtime_hours": 0.0,
+    "expected_total_available_hours": base["expected_total_available_hours"],
+    "projected_required_labor_hours": base["projected_required_labor_hours"],
+    "capacity_gap_hours": base["capacity_gap_hours"], "projected_unprocessed_wlu": base["projected_ending_backlog_wlu"],
+    "carry_in_wlu": _carry, "new_work_gap_hours": base["new_work_gap_hours"],
+    "feasible": bool(base["feasible"]), "feasibility_issues": base["feasibility_issues"],
+    "budget": state.budget(), "over_budget": bool(_b and not _b["within"]),
+    "backlog_risk": base["backlog_risk"], "projected_total_labor_cost": base["projected_total_labor_cost"],
+    "projected_same_day_shipped_revenue": base["projected_same_day_shipped_revenue"], "status": base["status"],
+    "workload": float(r["forecast_workload_units"]),
+}
 if not cs or cs["forecast_id"] != int(r["forecast_id"]):
-    _carry = backlog.carry_in(state.carry_plan(), r["target_date"])["response"]
-    base = backlog.with_carry_in(logic.scenario_table(int(r["forecast_id"]), tol), _carry, tol, state.policy()).iloc[0]
-    _b = fte.budget_check(float(base["projected_total_labor_cost"]), state.budget())
-    cs = {
-        "forecast_id": int(r["forecast_id"]), "scenario_id": "S01", "label": "Current plan",
-        "planned_regular_hours": base["planned_regular_hours"], "planned_overtime_hours": 0.0,
-        "expected_total_available_hours": base["expected_total_available_hours"],
-        "projected_required_labor_hours": base["projected_required_labor_hours"],
-        "capacity_gap_hours": base["capacity_gap_hours"], "projected_unprocessed_wlu": base["projected_ending_backlog_wlu"],
-        "carry_in_wlu": _carry, "new_work_gap_hours": base["new_work_gap_hours"],
-        "feasible": bool(base["feasible"]), "feasibility_issues": base["feasibility_issues"],
-        "budget": state.budget(), "over_budget": bool(_b and not _b["within"]),
-        "backlog_risk": base["backlog_risk"], "projected_total_labor_cost": base["projected_total_labor_cost"],
-        "projected_same_day_shipped_revenue": base["projected_same_day_shipped_revenue"], "status": base["status"],
-        "workload": float(r["forecast_workload_units"]),
-    }
+    cs = baseline
     ui.callout(["No scenario has been selected for this day yet, so the current plan is shown. "
                 "Choose another option on the Staffing scenarios page."])
 
@@ -106,22 +105,19 @@ with right:
                  "Choose a feasible option on Staffing scenarios, or record 'Keep current plan' / 'Monitor'.")
     elif cs.get("over_budget") and action == "Implement selected scenario":
         st.warning("The selected scenario is over the daily labor budget; the decision can still be saved.")
+    if action != "Implement selected scenario" and not baseline["feasible"]:
+        st.warning(f"The current plan itself breaks the selected staffing policy: {baseline['feasibility_issues']}")
+    if not blocked:
+        plan = cs if action == "Implement selected scenario" else baseline
+        msg = (f"Will be recorded as implemented: **{plan['label']}** — {plan['planned_regular_hours']:,.0f} h regular + "
+               f"{plan['planned_overtime_hours']:,.0f} h overtime, gap {plan['capacity_gap_hours']:+,.1f} h, "
+               f"labor cost {ui.fmt_money(plan['projected_total_labor_cost'])}.")
+        if action != "Implement selected scenario" and cs["label"] != baseline["label"]:
+            msg += (f" **{cs['label']}** ({ui.fmt_money(cs['projected_total_labor_cost'])}) is recorded separately as "
+                    "proposed, not implemented.")
+        st.info(msg)
     if st.button("Save decision", type="primary", disabled=blocked, key="save_decision"):
-        row = {
-            "saved_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "forecast_run": key_run, "target_date": key_target,
-            "scenario": cs["label"] if action == "Implement selected scenario" else "Current plan",
-            "final_action": action,
-            "planned_regular_hours": round(cs["planned_regular_hours"], 1),
-            "planned_overtime_hours": round(cs["planned_overtime_hours"], 1),
-            "expected_available_hours": round(cs["expected_total_available_hours"], 1),
-            "projected_capacity_gap": round(cs["capacity_gap_hours"], 1),
-            "projected_labor_cost": round(cs["projected_total_labor_cost"], 2),
-            "notes": (notes.strip() + (" [over daily labor budget]" if cs.get("over_budget")
-                                        and action == "Implement selected scenario" else "")).strip(),
-        }
-        DECISION_LOG.parent.mkdir(parents=True, exist_ok=True)
-        pd.DataFrame([row]).to_csv(DECISION_LOG, mode="a", header=not DECISION_LOG.exists(), index=False)
+        decisions.save([decisions.decision_record(action, cs, baseline, key_run, key_target, notes)])
         st.toast(f"Decision saved for {r['target_date']:%b %d, %Y}")
         st.rerun()
     ui.note("The manager remains responsible for the final staffing decision.")
@@ -129,6 +125,8 @@ with right:
 if latest is not None:
     ui.callout([f"{latest['final_action']} · {latest['scenario']}",
                 f"Regular {latest['planned_regular_hours']:,.0f} h + overtime {latest['planned_overtime_hours']:,.0f} h · saved {latest['saved_at']}"]
+               + ([f"Proposed, not implemented: {latest['proposed_not_implemented']}"]
+                  if isinstance(latest.get("proposed_not_implemented"), str) and latest.get("proposed_not_implemented") else [])
                + ([f"Notes: {latest['notes']}"] if isinstance(latest["notes"], str) and latest["notes"] else []),
                title=f"Decision saved for {r['target_date']:%b %d, %Y}")
 
