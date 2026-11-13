@@ -1,0 +1,523 @@
+2026-11-13 15:43:44.900 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.901 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.901 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.902 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.902 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.903 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.903 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.903 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-11-13 15:43:44.903 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+test_all_pages_render (test_app_pages.AppPageTests.test_all_pages_render) ... 2026-11-13 15:43:44.907 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:45.786 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:45.985 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:46.235 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:46.395 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:46.593 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:46.751 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+<project>/.venv/lib/python3.13/site-packages/sklearn/base.py:525: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.8.0 when using version 1.9.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+<project>/.venv/lib/python3.13/site-packages/sklearn/base.py:525: InconsistentVersionWarning: Trying to unpickle estimator RandomForestRegressor from version 1.8.0 when using version 1.9.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+2026-11-13 15:43:53.397 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:53.514 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.224 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:54.525 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.528 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.531 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.666 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.811 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:54.814 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+<project>/views/forecast_accuracy.py:90: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  fig.update_xaxes(range=[max(ts["target_date"].min(), x_end - pd.Timedelta(days=120)), x_end + pd.Timedelta(days=2)])
+2026-11-13 15:43:55.013 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+<project>/.venv/lib/python3.13/site-packages/pandas/core/resample.py:2359: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  + Timedelta(days=1, unit=edges_dti.unit).as_unit(edges_dti.unit)
+ok
+test_comparison_controls (test_app_pages.AppPageTests.test_comparison_controls) ... 2026-11-13 15:43:55.894 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:43:56.103 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.104 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.106 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.212 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.364 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.431 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.433 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.434 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.535 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.733 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.796 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.798 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.799 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:56.925 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.132 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.197 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.199 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.200 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.317 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.482 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.677 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.679 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.680 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.806 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:57.987 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.055 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.057 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.058 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.193 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.360 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.425 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.426 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.428 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.560 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.862 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.923 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.924 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:58.925 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.045 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.198 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.261 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.262 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.264 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.402 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+2026-11-13 15:43:59.592 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+ok
+test_day_detail_fte (test_app_pages.AppPageTests.test_day_detail_fte) ... 2026-11-13 15:43:59.594 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_navigation_preserved (test_app_pages.AppPageTests.test_navigation_preserved) ... ok
+test_workforce_planning_with_model_forecasts (test_app_pages.AppPageTests.test_workforce_planning_with_model_forecasts) ... 2026-11-13 15:43:59.774 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_implement_selected_records_scenario (test_decision_and_s06.AppTests.test_implement_selected_records_scenario) ... 2026-11-13 15:44:00.008 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_infeasible_custom_blocked_but_can_be_declined (test_decision_and_s06.AppTests.test_infeasible_custom_blocked_but_can_be_declined) ... 2026-11-13 15:44:00.551 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_keep_current_plan_after_selecting_overtime (test_decision_and_s06.AppTests.test_keep_current_plan_after_selecting_overtime) ... 2026-11-13 15:44:01.142 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:01.487 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_monitor_after_selecting_overtime (test_decision_and_s06.AppTests.test_monitor_after_selecting_overtime) ... 2026-11-13 15:44:01.842 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:02.207 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_surplus_day_with_s06_feasible_unchanged (test_decision_and_s06.AppTests.test_surplus_day_with_s06_feasible_unchanged) ... 2026-11-13 15:44:02.591 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:02.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_surplus_day_with_s06_infeasible (test_decision_and_s06.AppTests.test_surplus_day_with_s06_infeasible) ... 2026-11-13 15:44:02.772 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:02.890 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:02.890 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:03.030 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:03.150 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_implement_records_selected (test_decision_and_s06.DecisionRecordTests.test_implement_records_selected) ... ok
+test_infeasible_cannot_be_implemented_but_can_be_declined (test_decision_and_s06.DecisionRecordTests.test_infeasible_cannot_be_implemented_but_can_be_declined) ... ok
+test_keep_current_plan_records_baseline (test_decision_and_s06.DecisionRecordTests.test_keep_current_plan_records_baseline) ... ok
+test_monitor_keeps_baseline_and_flags_proposal (test_decision_and_s06.DecisionRecordTests.test_monitor_keeps_baseline_and_flags_proposal) ... ok
+test_no_proposal_when_baseline_selected (test_decision_and_s06.DecisionRecordTests.test_no_proposal_when_baseline_selected) ... ok
+test_old_log_is_migrated_not_corrupted (test_decision_and_s06.DecisionRecordTests.test_old_log_is_migrated_not_corrupted) ... ok
+test_training_pipeline_and_artifacts (test_evaluation.ModelEvaluationTests.test_training_pipeline_and_artifacts) ... ok
+test_four_methods_two_kpis_two_horizons (test_forecasting.AllMethodsRunTests.test_four_methods_two_kpis_two_horizons) ... <project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+Yearly seasonality is enabled with less than 730 days (approximately 2 years) of history. The model may be under-identified, and the trend/seasonality decomposition can be unstable and dependent on the Prophet/Stan version. Consider disabling yearly seasonality or providing more history.
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+15:44:05 - cmdstanpy - INFO - Chain [1] start processing
+15:44:06 - cmdstanpy - INFO - Chain [1] done processing
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1187: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  yearly_disable = last - first < pd.Timedelta(days=730)
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1209: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  weekly_disable = ((last - first < pd.Timedelta(weeks=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1210: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(weeks=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1223: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  daily_disable = ((last - first < pd.Timedelta(days=2)) or
+<project>/.venv/lib/python3.13/site-packages/prophet/forecaster.py:1224: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  (min_dt >= pd.Timedelta(days=1)))  # pyrefly:ignore[unsupported-operation]
+<project>/.venv/lib/python3.13/site-packages/pandas/core/internals/concat.py:510: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  return dtype.type("NaT")
+ok
+test_prophet_refits_on_history_up_to_origin_only (test_forecasting.AllMethodsRunTests.test_prophet_refits_on_history_up_to_origin_only) ... ok
+test_dm_test (test_forecasting.FrameworkTests.test_dm_test) ... ok
+test_existing_features_only_at_horizon_one (test_forecasting.FrameworkTests.test_existing_features_only_at_horizon_one) ... ok
+test_metrics_hand_calculated (test_forecasting.FrameworkTests.test_metrics_hand_calculated) ... ok
+test_no_future_information_in_features (test_forecasting.FrameworkTests.test_no_future_information_in_features)
+Changing every outcome after origin t0 must not change any feature of origins <= t0. ... ok
+test_split_matches_week11 (test_forecasting.FrameworkTests.test_split_matches_week11) ... ok
+test_training_rows_respect_cutoff (test_forecasting.FrameworkTests.test_training_rows_respect_cutoff) ... ok
+test_weekday_average_uses_only_history_to_origin (test_forecasting.FrameworkTests.test_weekday_average_uses_only_history_to_origin) ... ok
+test_complete_grid (test_forecasting.SavedResultTests.test_complete_grid) ... ok
+test_existing_random_forest_reproduced (test_forecasting.SavedResultTests.test_existing_random_forest_reproduced) ... ok
+test_identical_dates_and_chronology (test_forecasting.SavedResultTests.test_identical_dates_and_chronology) ... ok
+test_metrics_recomputed_from_saved_forecasts (test_forecasting.SavedResultTests.test_metrics_recomputed_from_saved_forecasts) ... ok
+test_selection_is_lowest_validation_mae (test_forecasting.SavedResultTests.test_selection_is_lowest_validation_mae) ... ok
+test_availability_applied_once_and_managers_excluded (test_fte.FteFormulaTests.test_availability_applied_once_and_managers_excluded) ... ok
+test_matches_saved_pipeline_hours (test_fte.FteFormulaTests.test_matches_saved_pipeline_hours) ... ok
+test_specified_example (test_fte.FteFormulaTests.test_specified_example) ... ok
+test_surplus_and_exact_multiples (test_fte.FteFormulaTests.test_surplus_and_exact_multiples) ... ok
+test_weekly_fte_and_configurable_shift (test_fte.FteFormulaTests.test_weekly_fte_and_configurable_shift) ... ok
+test_availability_on_added_shifts (test_fte.StaffingResponseTests.test_availability_on_added_shifts) ... ok
+test_backlog_carry_and_weekly_checks (test_fte.StaffingResponseTests.test_backlog_carry_and_weekly_checks) ... ok
+test_policy_validation (test_fte.StaffingResponseTests.test_policy_validation) ... ok
+test_roster_and_overtime_limits_make_day_infeasible (test_fte.StaffingResponseTests.test_roster_and_overtime_limits_make_day_infeasible) ... ok
+test_shortage_covered_with_whole_shifts (test_fte.StaffingResponseTests.test_shortage_covered_with_whole_shifts) ... ok
+test_small_remainder_uses_overtime (test_fte.StaffingResponseTests.test_small_remainder_uses_overtime) ... ok
+test_surplus_respects_minimum_staffing (test_fte.StaffingResponseTests.test_surplus_respects_minimum_staffing) ... ok
+test_coherent_demand_lags (test_model_scenarios.ScenarioTests.test_coherent_demand_lags) ... ok
+test_local_steps_add_up (test_model_scenarios.ScenarioTests.test_local_steps_add_up) ... ok
+test_quantile_warning (test_model_scenarios.ScenarioTests.test_quantile_warning) ... ok
+test_staff_and_hours_move_together (test_model_scenarios.ScenarioTests.test_staff_and_hours_move_together) ... ok
+test_unfeasible_staffing_rejected (test_model_scenarios.ScenarioTests.test_unfeasible_staffing_rejected) ... ok
+test_backlog_rolling (test_planning.PlanningTests.test_backlog_rolling) ... ok
+test_carry_in_backlog (test_planning.PlanningTests.test_carry_in_backlog) ... ok
+test_negative_input_fails (test_planning.PlanningTests.test_negative_input_fails) ... ok
+test_no_backlog_when_capacity_sufficient (test_planning.PlanningTests.test_no_backlog_when_capacity_sufficient) ... ok
+test_overtime_cost (test_planning.PlanningTests.test_overtime_cost) ... ok
+test_budget_flags (test_review_fixes.AppAcceptanceTests.test_budget_flags) ... 2026-11-13 15:44:09.803 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:09.946 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:09.946 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.008 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.140 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.140 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.423 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.562 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.562 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.598 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.739 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.739 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.787 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.916 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.916 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:10.954 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_day_detail_matches_planner (test_review_fixes.AppAcceptanceTests.test_day_detail_matches_planner) ... 2026-11-13 15:44:11.214 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:11.476 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_feasible_custom_scenario_allowed (test_review_fixes.AppAcceptanceTests.test_feasible_custom_scenario_allowed) ... 2026-11-13 15:44:11.648 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_forecast_reliability_explained (test_review_fixes.AppAcceptanceTests.test_forecast_reliability_explained) ... 2026-11-13 15:44:11.966 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+<project>/views/forecast_accuracy.py:90: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+  fig.update_xaxes(range=[max(ts["target_date"].min(), x_end - pd.Timedelta(days=120)), x_end + pd.Timedelta(days=2)])
+2026-11-13 15:44:12.278 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:12.450 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_infeasible_custom_scenario_blocked (test_review_fixes.AppAcceptanceTests.test_infeasible_custom_scenario_blocked) ... 2026-11-13 15:44:12.617 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_minimum_staffing_labelled_as_assumption (test_review_fixes.AppAcceptanceTests.test_minimum_staffing_labelled_as_assumption) ... 2026-11-13 15:44:12.956 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:13.136 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:13.512 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:13.664 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_overtime_cap_flagged (test_review_fixes.AppAcceptanceTests.test_overtime_cap_flagged) ... 2026-11-13 15:44:13.825 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_policy_change_propagates (test_review_fixes.AppAcceptanceTests.test_policy_change_propagates) ... 2026-11-13 15:44:14.186 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:14.442 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:14.634 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:14.756 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-13 15:44:14.872 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_carry_chain_matches_planner (test_review_fixes.BacklogConsistencyTests.test_carry_chain_matches_planner) ... ok
+test_custom_adjustment (test_review_fixes.BacklogConsistencyTests.test_custom_adjustment) ... ok
+test_first_day_requirement_independent (test_review_fixes.BacklogConsistencyTests.test_first_day_requirement_independent) ... ok
+test_opening_backlog_is_observed_value (test_review_fixes.BacklogConsistencyTests.test_opening_backlog_is_observed_value) ... ok
+test_with_carry_in_arithmetic_and_pipeline_untouched (test_review_fixes.BacklogConsistencyTests.test_with_carry_in_arithmetic_and_pipeline_untouched) ... ok
+test_budget (test_review_fixes.BudgetTests.test_budget) ... ok
+test_default_budget_close_to_typical_cost (test_review_fixes.BudgetTests.test_default_budget_close_to_typical_cost) ... ok
+test_predefined_scenarios_feasible_under_default_policy (test_review_fixes.FeasibilityTests.test_predefined_scenarios_feasible_under_default_policy) ... ok
+test_recommendation_skips_infeasible_options (test_review_fixes.FeasibilityTests.test_recommendation_skips_infeasible_options) ... ok
+test_rules (test_review_fixes.FeasibilityTests.test_rules) ... ok
+test_summary_recomputes_from_source (test_review_fixes.ReliabilityTests.test_summary_recomputes_from_source) ... ok
+test_forecast_and_scenario_linkage (test_submission.SourceIntegrity.test_forecast_and_scenario_linkage) ... ok
+test_operational_continuity (test_submission.SourceIntegrity.test_operational_continuity) ... ok
+test_static_staffing_not_hidden (test_submission.SourceIntegrity.test_static_staffing_not_hidden) ... ok
+
+----------------------------------------------------------------------
+Ran 76 tests in 31.083s
+
+OK
+workload: validation selected original: {'original': 18.867210507122355, 'revised': 24.372522948900365}
+productivity: validation selected original: {'original': 0.08740824737401796, 'revised': 0.0903866453253537}
